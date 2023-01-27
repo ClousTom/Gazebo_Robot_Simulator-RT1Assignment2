@@ -57,5 +57,4 @@ Possible improvements
 ----------------------
 Here are some ideas for future improvements:
 - By indicating the size of the arena, it would be possible to set a range of possible target coordinates;
-- One could graphically indicate the point corresponding to the entered coordinates to be reached.
-
+- A graphic indicator could be added at the point corresponding to the entered coordinates to be reached.
