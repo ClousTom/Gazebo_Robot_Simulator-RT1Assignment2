@@ -47,3 +47,7 @@ Inside `~/<your ros workspace folder>/src/assignment_2_2022/scripts/` there are 
 4. `go_to_point_service.py`: implementation of a service node. When called, it moves the robot to the requested position.
 5. `wall_follow_service.py`: implementation of a service node. When called, it allows the robot to move around an obstacle (in our case a wall).
 6. `service.py`: it is a service node. When called, it prints the number of successful reached targets and the number of cancelled targets.
+
+Flowchart
+----------------------
+![Flowchart](https://user-images.githubusercontent.com/117213899/199577692-37a57df5-8024-41dd-95b6-675b38e8669f.png)
