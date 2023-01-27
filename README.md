@@ -39,7 +39,7 @@ $ sudo apt-get install python-is-python3
 
 Nodes
 ----------------------
-Inside `~/<your ros workspace folder>/src/assignment_2_2022/scripts/` there are 6 python files, representing the 6 programme nodes:
+Inside `~/<your ros workspace folder>/src/assignment_2_2022/scripts/` there are 6 python files:
 
 1. `bug_as.py`: action server node receiving the requested position from the client and calling the necessary services to bring the robot to the required position;
 2. `user_input.py`: action client node responsible for asking the user to enter the coordinates X and Y of the final destination that the robot has to reach, or to delete them. Then, it publishes the robot position and speed as a custom message on the /_position_velocity_ topic, based on the values of the /_odom_ topic.
