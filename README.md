@@ -52,3 +52,10 @@ Inside `~/<your ros workspace folder>/src/assignment_2_2022/scripts/` there are 
 Flowchart (`input.py`)
 ----------------------
 ![flowchart](https://user-images.githubusercontent.com/117213899/215106562-20902234-1fe8-4b8e-b1c5-32a7173657ff.png)
+
+Possible improvements
+----------------------
+Here are some ideas for future improvements:
+- By indicating the size of the arena, it would be possible to set a range of possible target coordinates;
+- One could graphically indicate the point corresponding to the entered coordinates to be reached.
+
