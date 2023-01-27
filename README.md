@@ -15,7 +15,7 @@ $ sudo apt-get install python3-scipy
 ```
 Go inside the src folder of your ROS workspace and clone the repository folder:
 ```bash
-$ git clone
+$ git clone https://github.com/S5630055/ResearchTrack1---Assignment_2
 ```
 Then, from the root directory of your ROS workspace, run the command:
 ```bash
