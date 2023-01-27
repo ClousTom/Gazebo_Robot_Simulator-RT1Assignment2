@@ -26,7 +26,7 @@ Then, from the root directory of your ROS workspace run the command:
 ```bash
 $ catkin_make
 ```
-You can run ROSCORE in a terminal or skip it. Anyway, it will be runned automatically. Run the below to start the program.
+You can run `$ roscore`  in a terminal or skip it. Anyway, it will be runned automatically. Run the string below to start the programme:
 ```bash
 $ roslaunch assignment_2_2022 assignment2.launch
 ```
