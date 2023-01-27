@@ -48,6 +48,6 @@ Inside `~/<your ros workspace folder>/src/assignment_2_2022/scripts/` there are 
 5. `wall_follow_service.py`: implementation of a service node. When called, it allows the robot to move around an obstacle (in our case a wall).
 6. `service.py`: it is a service node. When called, it prints the number of successful reached targets and the number of cancelled targets.
 
-Flowchart
+Flowchart (`user_input.py`)
 ----------------------
 ![flowchart](https://user-images.githubusercontent.com/117213899/215106562-20902234-1fe8-4b8e-b1c5-32a7173657ff.png)
