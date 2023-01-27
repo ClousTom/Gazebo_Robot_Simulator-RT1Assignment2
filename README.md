@@ -50,4 +50,4 @@ Inside `~/<your ros workspace folder>/src/assignment_2_2022/scripts/` there are 
 
 Flowchart
 ----------------------
-![Flowchart](https://user-images.githubusercontent.com/117213899/199577692-37a57df5-8024-41dd-95b6-675b38e8669f.png)
+![flowchart](https://user-images.githubusercontent.com/117213899/215106562-20902234-1fe8-4b8e-b1c5-32a7173657ff.png)
