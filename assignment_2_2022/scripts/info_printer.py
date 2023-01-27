@@ -5,7 +5,6 @@ import math
 import time
 from scipy.spatial import distance #math.dist gets error in some computers
 from assignment_2_2022.msg import position_velocity
-# from assignment_2_2022.msg import Position_velocity
 
 
 InfoFreq = 1.0 #Frequency for printing infos
@@ -28,7 +27,6 @@ def PosVel(msg):
 		CurrentPosition=(CurrentX,CurrentY)
 		DestinationPosition=(DestinationX,DestinationY)
 		Distance=distance.euclidean(DestinationPosition,CurrentPosition) #Euclidean distance
-		# Distance=math.dist([DestinationX, DestinationY],[CurrentX, CurrentY]) #Euclidean distance
 
 		Speed=math.sqrt(msg.VelX**2+msg.VelY**2) #Average speed
 
