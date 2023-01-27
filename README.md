@@ -1,7 +1,7 @@
 Research Track I - Assignment 2
 ================================
 
-This project shows up a mobile robot moving in a 3D space, which has to reach a desired position by avoiding obstacles. This happens in a virtual environment, managed by the standard virtual simulator of ROS, called Gazebo.
+This project shows up a mobile robot moving in a 3D space, which has to reach a requested target coordinates avoiding obstacles. This happens in a virtual environment, managed by the standard virtual simulator of ROS, called Gazebo.
 ![default_gzclient_camera(1)-2023-01-27T15_23_29 351549](https://user-images.githubusercontent.com/117213899/215110545-c90c0ec1-ce38-4ce9-86e4-545e46050bc1.jpg)
 
 Installing and running
