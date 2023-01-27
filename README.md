@@ -32,7 +32,7 @@ Check your python version running:
 ```bash
 $ python --version
 ```
-If it appears Python 3, there is no problem. If appears Python 2, run this:
+If it appears Python 3, there is no problem. If it appears Python 2, run this:
 ```bash
 $ sudo apt-get install python-is-python3
 ```
