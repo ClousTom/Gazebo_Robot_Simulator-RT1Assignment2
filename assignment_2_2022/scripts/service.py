@@ -5,7 +5,6 @@ import actionlib
 import actionlib.msg
 import assignment_2_2022.msg
 from assignment_2_2022.srv import goals, goalsResponse
-# from assignment_2_2022.srv import goal_srv goal_srvResponse
 
 
 GoalsReached = 0 #Counts reached goals
