@@ -1,15 +1,33 @@
 #! /usr/bin/env python
 
-# import ros stuff
 import rospy
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist, Point
 from nav_msgs.msg import Odometry
 from tf import transformations
 from std_srvs.srv import *
-import time
 
 import math
+
+"""
+.. module:: go_to_point_service
+  :platform: Unix
+  :synopsis: ROS node for robot controlling in Gazebo
+
+.. moduleauthor:: Claudio Tomaiuolo c.tomaiuolo.rob@outlook.com
+
+This node implements the go_to_point_service for controlling the robot in Gazebo
+
+Publisher:
+    /cmd_vel
+
+Subscriber:
+    /odom
+
+Service:
+    go_to_point_switch
+"""
+
 
 active_ = False
 
@@ -39,6 +57,14 @@ pub = None
 
 # service callbacks
 
+"""
+  This function initializes the ROS node and waits for the robot's
+  *pose*, controlling the robot publishing a
+  *cmd_vel*, by relying on the `rospy <http://wiki.ros.org/rospy/>`_ module.
+
+  The velocity is passed as a ``geometry_msgs::Twist`` message; you can find an updated version of this module in
+  :mod:`scripts.exercise2`.
+"""
 
 def go_to_point_switch(req):
     global active_

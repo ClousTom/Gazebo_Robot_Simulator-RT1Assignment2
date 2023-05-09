@@ -12,6 +12,32 @@ from tf import transformations
 from std_srvs.srv import *
 import time
 
+"""
+.. module:: bug_as
+  :platform: Unix
+  :synopsis: ROS node for robot controlling in Gazebo
+
+.. moduleauthor:: Claudio Tomaiuolo c.tomaiuolo.rob@outlook.com
+
+This node implements the bug action service for controlling the robot in Gazebo
+
+Publisher:
+    /cmd_vel
+
+Subscriber:
+    /scan
+    /odon
+
+ServiceProxy:
+    /go_to_point_switch
+    /wall_follower_switch
+
+ActionServer:
+    /reaching_goal
+"""
+
+
+
 srv_client_go_to_point_ = None
 srv_client_wall_follower_ = None
 yaw_ = 0

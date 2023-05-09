@@ -9,6 +9,25 @@ from std_srvs.srv import *
 
 import math
 
+"""
+.. module:: wall_follow_service
+  :platform: Unix
+  :synopsis: ROS node for robot controlling in Gazebo
+
+.. moduleauthor:: Claudio Tomaiuolo c.tomaiuolo.rob@outlook.com
+
+This node implements the walls follow system service for controlling the robot in Gazebo
+
+Publisher:
+    /cmd_vel
+
+Subscriber:
+    /scan
+
+Service:
+    wall_follower_switch
+"""
+
 active_ = False
 
 pub_ = None
