@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scripts.info_printer &mdash; SecondAssignmentRT 1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            SecondAssignmentRT
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SecondAssignmentRT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">scripts.info_printer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for scripts.info_printer</h1><div class="highlight"><pre>
+<span></span><span class="ch">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: info_printer</span>
+<span class="sd">  :platform: Unix</span>
+<span class="sd">  :synopsis: Python ROS &#39;info_printer&#39; node module for RT1 Second Assignment</span>
+
+<span class="sd">.. moduleauthor:: Claudio Tomaiuolo c.tomaiuolo.rob@outlook.com</span>
+
+<span class="sd">This node calculates the distance from the desired destination and the current position of the robot and its average speed.</span>
+
+<span class="sd">Subscriber:</span>
+<span class="sd">	/pos_vel</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">distance</span> <span class="c1">#math.dist gets error in some computers</span>
+<span class="kn">from</span> <span class="nn">assignment_2_2022.msg</span> <span class="kn">import</span> <span class="n">position_velocity</span>
+
+<span class="n">InfoFreq</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1">#Frequency for printing infos</span>
+<span class="n">InfoPrinted</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1">#The last time that infos were printed</span>
+
+
+<span class="c1">#Callback function</span>
+<div class="viewcode-block" id="PosVel"><a class="viewcode-back" href="../../index.html#scripts.info_printer.PosVel">[docs]</a><span class="k">def</span> <span class="nf">PosVel</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Callback function of the Subscriber that converts time in milliseconds.</span>
+<span class="sd">	It calculates the distance from the robot position and the desired destination and the average speed of the robot, printing them on the screen.</span>
+
+<span class="sd">	Args:</span>
+<span class="sd">	message(position_velocity)</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">global</span> <span class="n">InfoFreq</span><span class="p">,</span> <span class="n">InfoPrinted</span>
+	<span class="n">Period</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">InfoFreq</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span> <span class="c1">#Time in milliseconds</span>
+	<span class="n">CurrentTime</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">*</span><span class="mi">1000</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="n">CurrentTime</span><span class="o">-</span><span class="n">InfoPrinted</span><span class="p">)</span><span class="o">&gt;</span><span class="n">Period</span><span class="p">:</span>
+
+		<span class="n">CurrentX</span><span class="o">=</span><span class="n">msg</span><span class="o">.</span><span class="n">CurrentX</span> <span class="c1">#Current position</span>
+		<span class="n">CurrentY</span><span class="o">=</span><span class="n">msg</span><span class="o">.</span><span class="n">CurrentY</span>
+		<span class="n">DestinationX</span><span class="o">=</span><span class="n">rospy</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="s2">&quot;des_pos_x&quot;</span><span class="p">)</span> <span class="c1">#Position by user</span>
+		<span class="n">DestinationY</span><span class="o">=</span><span class="n">rospy</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="s2">&quot;des_pos_y&quot;</span><span class="p">)</span>
+		
+		<span class="n">CurrentPosition</span><span class="o">=</span><span class="p">(</span><span class="n">CurrentX</span><span class="p">,</span><span class="n">CurrentY</span><span class="p">)</span>
+		<span class="n">DestinationPosition</span><span class="o">=</span><span class="p">(</span><span class="n">DestinationX</span><span class="p">,</span><span class="n">DestinationY</span><span class="p">)</span>
+		<span class="n">Distance</span><span class="o">=</span><span class="n">distance</span><span class="o">.</span><span class="n">euclidean</span><span class="p">(</span><span class="n">DestinationPosition</span><span class="p">,</span><span class="n">CurrentPosition</span><span class="p">)</span> <span class="c1">#Euclidean distance</span>
+
+		<span class="n">Speed</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">VelX</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">msg</span><span class="o">.</span><span class="n">VelY</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#Average speed</span>
+
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average speed: &quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="n">Speed</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span><span class="s2">&quot; Distance from selected position: &quot;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="n">Distance</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+
+		<span class="n">InfoPrinted</span><span class="o">=</span><span class="n">CurrentTime</span></div>
+	
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../index.html#scripts.info_printer.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	This function inizializes the ROS node &#39;info_printer&#39;. It gets the value of the frequency and</span>
+<span class="sd">	waits the custon message from the topic &#39;/pos_vel&#39;.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s1">&#39;info_printer&#39;</span><span class="p">)</span>
+	
+	<span class="k">global</span> <span class="n">InfoFreq</span>
+	<span class="n">InfoFreq</span><span class="o">=</span><span class="n">rospy</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="s2">&quot;freq&quot;</span><span class="p">)</span> <span class="c1">#Get the publish frequency</span>
+	
+	<span class="n">SubPosVel</span><span class="o">=</span><span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="s2">&quot;/pos_vel&quot;</span><span class="p">,</span> <span class="n">position_velocity</span><span class="p">,</span><span class="n">PosVel</span><span class="p">)</span> <span class="c1">#Get from &quot;pos_vel&quot; a parameter</span>
+	
+	<span class="n">rospy</span><span class="o">.</span><span class="n">spin</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="n">main</span><span class="p">()</span>	
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Claudio Tomaiuolo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
