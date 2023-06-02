@@ -59,3 +59,10 @@ Possible improvements
 Here are some ideas for future improvements:
 - By indicating the size of the arena, it would be possible to set a range of possible target coordinates;
 - A graphic indicator could be added at the point corresponding to the entered coordinates to be reached.
+
+
+Research Track II - Assignment 1
+================================
+
+- Added Sphinx documentation
+- Added Jupyter notebook file which replaces `input.py` node to send input interactively, with a live graph to keep track of the robot's position and movements, the goals reached and cancelled, and the destination it is reaching.
